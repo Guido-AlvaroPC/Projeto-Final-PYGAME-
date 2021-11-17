@@ -1,5 +1,6 @@
 # ===== Inicialização =====
 # ----- Importa e inicia pacotes
+
 import pygame
 
 pygame.init()
@@ -14,7 +15,7 @@ pygame.display.set_caption('Hello World!')
 game = True
 
 # ----- Inicia assets
-image = pygame.image.load('assets/img/praia.png').convert()
+image = pygame.image.load('Projeto-Final-PYGAME-/assets/img/praia.png').convert()
 
 # ===== Loop principal =====
 while game:
@@ -26,7 +27,7 @@ while game:
 
     # ----- Gera saídas
     window.fill((0, 0, 0))  # Preenche com a cor branca
-    window.blit(image, (10, 10))
+    window.blit(image, (0, 0))
 
     # ----- Atualiza estado do jogo
     pygame.display.update()  # Mostra o novo frame para o jogador
