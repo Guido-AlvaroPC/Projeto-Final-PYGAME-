@@ -15,7 +15,7 @@ pygame.display.set_caption('Hello World!')
 game = True
 
 # ----- Inicia assets
-image = pygame.image.load('Projeto-Final-PYGAME-/assets/img/praia.png').convert()
+image = pygame.image.load('assets/img/praia.png').convert()
 
 # ===== Loop principal =====
 while game:
