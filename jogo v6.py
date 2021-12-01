@@ -3,7 +3,7 @@ import random
 pygame.init()
 
 
-width,height = (800,600)
+width,height = (1280,720)
 screen = pygame.display.set_mode((width,height))
 
 def gera_palavra():
@@ -11,18 +11,20 @@ def gera_palavra():
     wordStr = random.choice(words).strip()
     return DestroiPalavras(wordStr)
 
+
+
 class DestroiPalavras(pygame.sprite.Sprite):
     def __init__(self, word):
         global width
         pygame.sprite.Sprite.__init__(self)
-        self.font = pygame.font.Font("assets/font/font.ttf",40) #escreve a fonte
+        self.font = pygame.font.Font("assets/font/minecraft.ttf",40) #escreve a fonte
         self.originalWord = word
         self.word = word
-        self.image = self.font.render(self.word, True, (0,0,0))
+        self.image = self.font.render(self.word, True, (96,96,96))
         self.rect = self.image.get_rect()
         self.rect.bottom = 0
         self.rect.centerx = random.uniform(self.rect.width/2,width-self.rect.width/2)
-        
+    
     def checa_letra(self, letter):
         #verifica uma letra que o jogador digitou
         if letter == self.word[0]:
@@ -55,6 +57,34 @@ class DestroiPalavras(pygame.sprite.Sprite):
     def lose():
             print ("GAME OVER!"),score
             running = False
+destroi_palavras = pygame.sprite.Group()
+
+class Explosion(pygame.sprite.Sprite):
+    def __init__(self, x, y):
+        pygame.sprite.Sprite.__init__(self)
+        self.images = []
+        for num in range(1, 6):
+            imag = pygame.image.load(f'assets/sprites/exp{num}.png')
+            imag = pygame.transform.scale(imag, (100, 100))
+            self.images.append(imag)
+        self.index = 0
+        self.image = self.images[self.index]
+        self.rect = self.image.get_rect()
+        self.rect.center = [x, y]
+        self.counter = 0
+
+    def update(self):
+        explosion_speed = 4
+        self.counter += 1
+        if self.counter>= explosion_speed:
+            self.counter = 0
+            self.index += 1
+            self.image = self.images[self.index]
+        if self.index >= len(self.images)-1 and self.counter >= explosion_speed:
+            self.kill()
+explosion_group = pygame.sprite.Group()
+
+
 
 running = True
 speed = 10
@@ -66,17 +96,28 @@ wordfile.close()
 score = 0
 
 score_font = pygame.font.Font("assets/font/score_font.ttf",60)
-background = pygame.image.load("assets/img/praia.png").convert()
+background = pygame.image.load("assets/img/background.png").convert()
+music = pygame.mixer.music.load('assets/snd/theme.mp3')
+vol = pygame.mixer.music.set_volume(0.1)
+pygame.mixer.music.play(-1)
 
 clock = pygame.time.Clock()
+FPS = 60
+
+
+
 while running: #Loop Principal
     clock.tick(20)
+    explosion_group.draw(screen)
+    explosion_group.update()
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False #Para o Jogo
+
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_ESCAPE:
-                running = False 
+                running = False
+
             else:
                 if currentword.checa_letra(event.unicode):
                     speed += 3
@@ -90,7 +131,13 @@ while running: #Loop Principal
                         
                     else:
                         currentword = gera_palavra()
+                        #explosion = Explosion(200,200 )
+                        #explosion_group.add(explosion)
+
     currentword.atualiza()
+            
+    pygame.display.flip()
+
     for i in extra_words:
         i.update()
 
@@ -101,7 +148,9 @@ while running: #Loop Principal
     screen.blit(score_surf,(0,530))
     for i in extra_words:
         screen.blit(i.image, i.rect)
-    pygame.draw.line(screen,(0,255,0),(width/2, height),(currentword.rect.left+7, currentword.rect.bottom),14)
+    pygame.draw.line(screen,(255,0,0),(width/2, height),(currentword.rect.left+7, currentword.rect.bottom),14)
     screen.blit(currentword.image, currentword.rect)
-    pygame.display.flip()
+
+
+
 pygame.quit()
