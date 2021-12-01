@@ -76,9 +76,9 @@ class Explosion(pygame.sprite.Sprite):
         self.counter = 0
 
     def update(self):
-        explosion_speed = 4
+        explosion_speed = 5
         self.counter += 1
-        if self.counter>= explosion_speed:
+        if self.counter>= explosion_speed and self.index < len(self.images)-1:
             self.counter = 0
             self.index += 1
             self.image = self.images[self.index]
@@ -108,11 +108,11 @@ clock = pygame.time.Clock()
 FPS = 60
 
 
-
 while running: #Loop Principal
     clock.tick(20)
     explosion_group.draw(screen)
     explosion_group.update()
+
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False #Para o Jogo
@@ -132,10 +132,14 @@ while running: #Loop Principal
                                 lowestwordindex = i
                         currentword = extra_words.pop(lowestwordindex)
                         
+                        
                     else:
                         currentword = gera_palavra()
-                        #explosion = Explosion(200,200 )
-                        #explosion_group.add(explosion)
+                        explosion = Explosion(currentword.rect.left,currentword.rect.bottom)
+                        explosion_group.add(explosion)
+                        
+                        
+                        
 
     currentword.atualiza()
             
@@ -145,7 +149,6 @@ while running: #Loop Principal
         i.update()
 
     score_surf = score_font.render("SCORE:"+str(score), True, (0,255,0))
-    
     screen.fill((0,0,0))
     screen.blit(background,(0,0))
     screen.blit(score_surf,(0,530))
@@ -153,5 +156,6 @@ while running: #Loop Principal
         screen.blit(i.image, i.rect)
     pygame.draw.line(screen,(255,0,0),(width/2, height),(currentword.rect.left+7, currentword.rect.bottom),14)
     screen.blit(currentword.image, currentword.rect)
+
 
 pygame.quit()
