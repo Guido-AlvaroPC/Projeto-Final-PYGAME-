@@ -104,4 +104,6 @@ while running: #Loop Principal
     pygame.draw.line(screen,(0,255,0),(width/2, height),(currentword.rect.left+7, currentword.rect.bottom),14)
     screen.blit(currentword.image, currentword.rect)
     pygame.display.flip()
+
 pygame.quit()
+
