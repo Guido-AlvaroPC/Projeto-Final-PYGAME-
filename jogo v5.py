@@ -67,3 +67,41 @@ score = 0
 
 score_font = pygame.font.Font("assets/font/score_font.ttf",60)
 background = pygame.image.load("assets/img/praia.png").convert()
+
+clock = pygame.time.Clock()
+while running: #Loop Principal
+    clock.tick(20)
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False #Para o Jogo
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_ESCAPE:
+                running = False 
+            else:
+                if currentword.checa_letra(event.unicode):
+                    speed += 3
+                    score += 1
+                    if len(extra_words) > 0:
+                        lowestwordindex = 0
+                        for i in range(len(extra_words)):
+                            if extra_words[i].rect.bottom > extra_words[lowestwordindex].rect.bottom:
+                                lowestwordindex = i
+                        currentword = extra_words.pop(lowestwordindex)
+                        
+                    else:
+                        currentword = gera_palavra()
+    currentword.atualiza()
+    for i in extra_words:
+        i.update()
+
+    score_surf = score_font.render("SCORE:"+str(score), True, (0,255,0))
+    
+    screen.fill((0,0,0))
+    screen.blit(background,(0,0))
+    screen.blit(score_surf,(0,530))
+    for i in extra_words:
+        screen.blit(i.image, i.rect)
+    pygame.draw.line(screen,(0,255,0),(width/2, height),(currentword.rect.left+7, currentword.rect.bottom),14)
+    screen.blit(currentword.image, currentword.rect)
+    pygame.display.flip()
+pygame.quit()
