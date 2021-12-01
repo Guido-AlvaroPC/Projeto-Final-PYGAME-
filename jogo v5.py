@@ -29,11 +29,7 @@ class DestroiPalavras(pygame.sprite.Sprite):
             self.word = self.word[1:]
             self.atualiza_imagem()
         return self.word == ""
-<<<<<<< HEAD
 
-=======
-    
->>>>>>> 2e8acead1dc3d03b4355df69ac773e398d36d8b3
     def atualiza_imagem(self):
         self.image = self.font.render(self.word, True, (255,0,0))
         right = self.rect.right
@@ -59,7 +55,6 @@ class DestroiPalavras(pygame.sprite.Sprite):
     def lose():
             print ("GAME OVER!"),score
             running = False
-<<<<<<< HEAD
 
 running = True
 speed = 10
@@ -72,7 +67,3 @@ score = 0
 
 score_font = pygame.font.Font("assets/font/score_font.ttf",60)
 background = pygame.image.load("assets/img/praia.png").convert()
-
-#loop principal
-=======
->>>>>>> 2e8acead1dc3d03b4355df69ac773e398d36d8b3
