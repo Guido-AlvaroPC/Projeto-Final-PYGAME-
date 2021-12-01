@@ -3,6 +3,9 @@
 
 import pygame
 import random
+from assets import CANHAO_IMG
+
+from config import IMG_DIR
 pygame.init()
 
 # ----- Gera tela principal
@@ -10,6 +13,16 @@ WIDTH = 920
 HEIGHT = 690
 window = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption('Teste')
+
+# ----- Inicia assets
+fundo = pygame.image.load('assets/img/praia.png').convert()
+fonte = pygame.font.SysFont('arial',30,True,True)
+
+#------ Inicia Musicas
+
+musica = pygame.mixer.music.load('assets/snd/theme.mp3')
+volume = pygame.mixer.music.set_volume(0.1)
+pygame.mixer.music.play(-1)
 
 # ----- Inicia estruturas de dados
 game = True
@@ -23,22 +36,26 @@ clock = pygame.time.Clock()
 FPS = 60
 
 class PALAVRA(pygame.sprite.Sprite):
-    def __init__(self,palavra):
-        pygame.sprite.Sprite.__init__(self,img)
-        
+    def __init__(self,img):
+        pygame.sprite.Sprite.__init__(self)
 
+        self.image = pygame.image.load('assets/img/canhão.png').convert_alpha()
+        self.image = pygame.transform.scale(self.image, (50, 50))
+        #self.image = img
+        self.rect = self.image.get_rect()
+        self.rect.x = random.randint(0, WIDTH)
+        self.rect.y = random.randint(-100,HEIGHT)
+        self.speedx = random.randint(-3, 3)
+        self.speedy = random.randint(2, 9)
+    def uptade (self):
+        self.rect.x += self.speedx
+        self.rect.y += self.speedy
 
-        
+game = True
+Clock = pygame.time.Clock()
+FPS = 60
 
-# ----- Inicia assets
-fundo = pygame.image.load('assets/img/praia.png').convert()
-fonte = pygame.font.SysFont('arial',30,True,True)
-
-#------ Inicia Musicas
-
-musica = pygame.mixer.music.load('assets/snd/theme.mp3')
-volume = pygame.mixer.music.set_volume(0.1)
-pygame.mixer.music.play(-1)
+pal = PALAVRA(CANHAO_IMG)
 
 todas_palavras = pygame.sprite.Group()
 todas_sprites = pygame.sprite.Group()
@@ -63,6 +80,10 @@ while game:
         todas_sprites.add(palavra)
 
     todas_sprites.update()
+    pal.update(
+
+    window.blit(pal.image, pal.rect)
+    )
 
 
     # ----- Gera saídas
