@@ -6,6 +6,8 @@ pygame.init()
 width,height = (1280,720)
 screen = pygame.display.set_mode((width,height))
 
+
+
 def gera_palavra():
     global words
     wordStr = random.choice(words).strip()
@@ -95,6 +97,7 @@ extra_words = []
 wordfile.close()
 score = 0
 
+#carrega sons, imagem e fonte
 score_font = pygame.font.Font("assets/font/score_font.ttf",60)
 background = pygame.image.load("assets/img/background.png").convert()
 music = pygame.mixer.music.load('assets/snd/theme.mp3')
